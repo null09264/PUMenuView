@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  PUMenuView.h
 //  PUMenuViewDemo
 //
 //  Created by Wang, Jinghan on 11/06/15.
@@ -8,10 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
-
+@interface PUMenuView : UIView
 
 @end
-
