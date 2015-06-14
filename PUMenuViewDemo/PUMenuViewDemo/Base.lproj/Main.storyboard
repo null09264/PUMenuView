@@ -15,22 +15,7 @@
                     <view key="view" contentMode="scaleToFill" id="8Ku-RO-sRQ">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="21b-ji-96T">
-                                <rect key="frame" x="268.5" y="550" width="63" height="30"/>
-                                <state key="normal" title="Add Item">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="addItem:" destination="rfM-yc-osH" eventType="touchUpInside" id="10i-Db-N1R"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="centerX" secondItem="21b-ji-96T" secondAttribute="centerX" id="EZF-Xd-1zc"/>
-                            <constraint firstItem="kyc-7R-8Lc" firstAttribute="top" secondItem="21b-ji-96T" secondAttribute="bottom" constant="20" id="GxU-Dn-phf"/>
-                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gys-DO-W9v" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "PUMenuView.h"
 
-@interface ViewController ()
+@interface ViewController () <PUMenuViewDelegate, PUMenuViewDataSource>
 @property (nonatomic) PUMenuView *menuView;
 @end
 
@@ -24,21 +24,28 @@
     NSDictionary *dict = NSDictionaryOfVariableBindings(menuView);
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[menuView]|" options:0 metrics:nil views:dict]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[menuView]|" options:0 metrics:nil views:dict]];
+    menuView.dataSource = self;
+    menuView.delegate = self;
 }
 
-- (void)didReceiveMemoryWarning {
-	[super didReceiveMemoryWarning];
-	// Dispose of any resources that can be recreated.
+#pragma mark - PUMenuViewDataSource
+
+- (NSInteger)numberOfItemsInMenuView:(PUMenuView *)menuView {
+    return 6;
 }
 
-- (IBAction)addItem:(id)sender {
-    UIView *item = [UIView new];
-    item.backgroundColor = [UIColor blackColor];
-    [self.menuView addItem:item];
-    [self.menuView setNeedsLayout];
-    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void){
-        [self.menuView layoutIfNeeded];
-    } completion:nil];
+- (UIButton *)menuView:(PUMenuView *)menuView buttonForItemAtIndex:(NSInteger)index {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button.backgroundColor = [UIColor blackColor];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setTitle:[NSString stringWithFormat:@"Button %ld", index] forState:UIControlStateNormal];
+    return button;
+}
+
+#pragma mark - PUMenuViewDelegate
+
+- (void)menuView:(PUMenuView *)menuView itemDidSelectAtIndex:(NSInteger)index {
+    NSLog(@"Button Did Clicked: %ld", index);
 }
 
 @end

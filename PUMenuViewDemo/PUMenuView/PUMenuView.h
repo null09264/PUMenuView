@@ -12,24 +12,26 @@
 
 @protocol PUMenuViewDataSource
 
-- (NSInteger) numberOfItemsInmenuView:(PUMenuView *) menuView;
-- (UIImage *) menuView:(PUMenuView *) menuView iconForItemAtIndex: (NSInteger) index;
-- (NSString *) menuView:(PUMenuView *) menuView titleForItemAtIndex: (NSInteger) index;
+- (NSInteger) numberOfItemsInMenuView:(PUMenuView *) menuView;
+
+@optional
+- (UIButton *) menuView:(PUMenuView *) menuView buttonForItemAtIndex:(NSInteger) index;
+- (UIView *) menuView:(PUMenuView *) menuView viewForItemAtIndex:(NSInteger) index;
 
 @end
 
 @protocol PUMenuViewDelegate
 
+@optional
 - (void) menuView:(PUMenuView *) menuView itemDidSelectAtIndex: (NSInteger) index;
 
 @end
 
 @interface PUMenuView : UIView
 
-@property id<PUMenuViewDelegate> delegate;
-@property id<PUMenuViewDataSource> dataSource;
+@property (nonatomic, weak) NSObject<PUMenuViewDelegate> *delegate;
+@property (nonatomic, weak) NSObject<PUMenuViewDataSource> *dataSource;
 
 - (void)addItem:(UIView *)item;
-- (void)reloadContent;
 
 @end

@@ -13,6 +13,7 @@
 #define VERTICAL_SPACE_MULTIPLIER 1/12.0
 #define HORIZONTAL_MARGIN_MULTIPLIER 1/12.0
 #define HORIZONTAL_SPACING_MULTIPLIER (1 - 2 * HORIZONTAL_MARGIN_MULTIPLIER - 3 * ITEM_SIDE_LENGTH_MULTIPLIER) / (NUMBER_OF_COLUMN - 1)
+#define BUTTON_TAG_BASE 9743
 
 @interface PUMenuView ()
 
@@ -49,16 +50,40 @@
 	return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame andCapacity:(NSInteger)numberOfMenuItems {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.items = [[NSMutableArray alloc]init];
-        [self setUpLayoutGuides];
-    }
-    return self;
+- (void)setDataSource:(NSObject<PUMenuViewDataSource> *)dataSource {
+    _dataSource = dataSource;
+    [self setUpItems];
 }
 
-#pragma mark - item filling
+#pragma mark - button configuration
+
+- (void)setUpItems {
+    NSObject<PUMenuViewDataSource> *dataSrouce = self.dataSource;
+    NSAssert(dataSrouce != nil, @"DataSource is nil.");
+    
+    if ([dataSrouce respondsToSelector:@selector(menuView:buttonForItemAtIndex:)]) {
+        for (int index = 0; index < [dataSrouce numberOfItemsInMenuView:self]; index++) {
+            UIButton *button = [dataSrouce menuView:self buttonForItemAtIndex:index];
+            [button addTarget:self action:@selector(buttonDidClick:) forControlEvents:UIControlEventTouchUpInside];
+            button.tag = index + BUTTON_TAG_BASE;
+            [self addItem:button];
+        }
+    } else if ([dataSrouce respondsToSelector:@selector(menuView:viewForItemAtIndex:)]){
+        for (int index = 0; index < [dataSrouce numberOfItemsInMenuView:self]; index++) {
+            UIView *view = [dataSrouce menuView:self viewForItemAtIndex:index];
+            [self addItem:view];
+        }
+    }
+}
+
+#pragma mark - button event handler
+
+- (void)buttonDidClick:(UIButton *)button {
+    NSObject<PUMenuViewDelegate> *delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(menuView:itemDidSelectAtIndex:)]) {
+        [delegate menuView:self itemDidSelectAtIndex:button.tag - BUTTON_TAG_BASE];
+    }
+}
 
 
 #pragma mark - constraint configuration
@@ -438,10 +463,6 @@
     
     
     [items addObject:item];
-}
-
-- (void)reloadContent {
-	
 }
 
 @end
