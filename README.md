@@ -1,11 +1,17 @@
 ## PUMenuView
 PUMenuView is a "tumblr" style popping menu view. It is built with Objective C and fully backed by Auto Layout. With PUMenuView, you can animate the menu easily and add as many menu items as you wish.
 
+=====
+
 ####Using with CocoaPods
 
 `pod 'PUMenuView', '~> 1.0.0-beta'`
 
+=====
+
 ####DataSource Methods
+
+=====
 
 #####Necessary:
 ```objc
@@ -40,3 +46,24 @@ This method provides the menu the customized views it needs to show. This method
 =====
 
 ####Parameters
+```objc
+//behavior
+@property (nonatomic) BOOL menuShouldHideAfterSelection;
+
+//state
+@property (nonatomic) BOOL isAnimationPresenting;
+@property (nonatomic) BOOL isHidden;
+@property (nonatomic) BOOL readyForShowing;
+
+//animation (show & hide)
+@property (nonatomic) CGFloat animationUnitDelay;
+@property (nonatomic) CGFloat animationSpringDamping;
+@property (nonatomic) CGFloat animationDuration;
+
+//layout
+@property (nonatomic) NSInteger numberOfColumns;
+@property (nonatomic) CGFloat itemSideLengthMultiplier;
+@property (nonatomic) CGFloat verticalSpaceMultiplier;
+@property (nonatomic) CGFloat horizontalMarginMultiplier;
+@property (nonatomic, readonly) CGFloat horizontalSpacingMultiplier;
+```
