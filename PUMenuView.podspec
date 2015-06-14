@@ -71,7 +71,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/null09264/PUMenuView.git", :tag => "1.0.0-beta" }
+  s.source       = { :git => "https://github.com/null09264/PUMenuView.git", :tag => "1.0.0-beta", :commit => "55e85558c0ff4f6cbd764042579fa3afe8ef3688" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -82,7 +82,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "PUMenuView"
+  s.source_files  = "PUMenuView/*"
   # s.exclude_files = "Classes/Exclude"
 
   s.public_header_files = "PUMenuView/*.h"
