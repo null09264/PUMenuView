@@ -1,11 +1,15 @@
 ## PUMenuView
-PUMenuView is a "tumblr" style popping menu view. It is built with Objective C and fully backed by Auto Layout. With PUMenuView, you can animate the menu easily and add as many menu items as you wish.
+**PUMenuView** is a "tumblr" style popping menu view. It is built with Objective C and fully backed by **_Auto Layout_**. With PUMenuView, you can animate the menu easily and add as many menu items as you wish.
+
+=====
+
+![ios simulator screen shot 2015 6 15 00 50 32](https://cloud.githubusercontent.com/assets/4215068/8149565/3aacba74-12fa-11e5-961a-f8d41ac4d323.png)
 
 =====
 
 ####Using with CocoaPods
 
-`pod 'PUMenuView', '~> 1.0.0'`
+`pod 'PUMenuView', '~> 1.0.1'`
 
 =====
 
@@ -35,7 +39,7 @@ This method provides the menu the customized views it needs to show. This method
 ####Delegate Methods
 
 ```objc
-- (void)menuView:(PUMenuView *) menuView itemDidSelectAtIndex:(NSInteger)index;
+- (void)menuView:(PUMenuView *)menuView itemDidSelectAtIndex:(NSInteger)index;
 - (void)menuViewWillShow:(PUMenuView *)menuView;
 - (void)menuViewDidShow:(PUMenuView *)menuView;
 - (void)menuViewWillHide:(PUMenuView *)menuView;
@@ -49,7 +53,7 @@ This method provides the menu the customized views it needs to show. This method
 @property (nonatomic, weak) NSObject<PUMenuViewDelegate> *delegate;
 @property (nonatomic, weak) NSObject<PUMenuViewDataSource> *dataSource;
 
-@property (nonatomic, strong) UIView *backgroundView;
+@property (nonatomic) UIView *backgroundView;
 
 //behavior
 @property (nonatomic) BOOL menuShouldHideAfterSelection;
@@ -73,8 +77,12 @@ This method provides the menu the customized views it needs to show. This method
 @property (nonatomic, readonly) CGFloat horizontalSpacingMultiplier;
 ```
 
-##PUMenuItem
-PUMenuItem is a container which combines a UIButton instance and a UILabel instance. PUMenuItem can be passes to PUMenuView via the datasource method `menuView:viewForItemAtIndex:`. In this case the UIControlEvent for the UIButton inside the PUMenuItem will be picked by the menuView and passed out view the delegate method `menuView:itemDidSelectAtIndex:`.
+=====
+
+###PUMenuItem
+**PUMenuItem** is a container which combines a UIButton instance and a UILabel instance. **PUMenuItem** can be passes to **PUMenuView** via the datasource method `menuView:viewForItemAtIndex:`. In this case the UIControlEvent for the UIButton inside the PUMenuItem will be picked by the menuView and passed out view the delegate method `menuView:itemDidSelectAtIndex:`.
+
+=====
 
 ####Parameters
 ```objc
