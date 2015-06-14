@@ -80,7 +80,7 @@
 }
 
 - (void)menuViewDidHide:(PUMenuView *)menuView {
-	NSLog(@"View will hide.");
+	NSLog(@"View did hide.");
 }
 
 #pragma mark - IBActions

@@ -14,25 +14,30 @@
 @interface PUMenuView ()
 
 //layout accessory views
-@property UIView *itemTemplate;
-@property UIView *positionLayoutGuideContainer;
-@property UIView *horizontalSpacingLayoutGuideItemTemplate;
-@property NSMutableDictionary *horizontalPositionLayoutGuideItems;
-@property NSMutableDictionary *horizontalSpacingLayoutGuideItems;
-@property UIView *verticalSpacingLayoutGuideItemTemplate;
-@property NSMutableDictionary *verticalPositionLayoutGuideItems;
-@property NSMutableDictionary *verticalSpacingLayoutGuideItems;
+@property (nonatomic) UIView *itemTemplate;
+@property (nonatomic) UIView *positionLayoutGuideContainer;
+@property (nonatomic) UIView *horizontalSpacingLayoutGuideItemTemplate;
+@property (nonatomic) NSMutableDictionary *horizontalPositionLayoutGuideItems;
+@property (nonatomic) NSMutableDictionary *horizontalSpacingLayoutGuideItems;
+@property (nonatomic) UIView *verticalSpacingLayoutGuideItemTemplate;
+@property (nonatomic) NSMutableDictionary *verticalPositionLayoutGuideItems;
+@property (nonatomic) NSMutableDictionary *verticalSpacingLayoutGuideItems;
 
 //explicit constraints
-@property NSLayoutConstraint *trailingLayoutConstraint;
-@property NSLayoutConstraint *bottomLayoutConstraint;
+@property (nonatomic) NSLayoutConstraint *trailingLayoutConstraint;
+@property (nonatomic) NSLayoutConstraint *bottomLayoutConstraint;
 
 //visible items
-@property NSMutableArray *items;
+@property (nonatomic) NSMutableArray *items;
+
+//gesture recoginizer
+@property (nonatomic) UITapGestureRecognizer *dismissTapGesture;
 
 @end
 
-@implementation PUMenuView
+@implementation PUMenuView {
+	NSInteger _completionCount;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
@@ -65,11 +70,16 @@
 	[[UIVisualEffectView alloc] initWithEffect:effect];
 	backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
 	backgroundView.alpha = 0;
+	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(viewDidTap:)];
+	[backgroundView addGestureRecognizer:tap];
+	self.dismissTapGesture = tap;
+	self.backgroundView = backgroundView;
+	
 	[self addSubview:backgroundView];
 	NSDictionary *viewBindings = NSDictionaryOfVariableBindings(backgroundView);
 	[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[backgroundView]|" options:0 metrics:nil views:viewBindings]];
 	[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[backgroundView]|" options:0 metrics:nil views:viewBindings]];
-	self.backgroundView = backgroundView;
+	
 	
 }
 
@@ -105,6 +115,7 @@
 		item.alpha = 0;
 	}
 	
+	_completionCount = 0;
 	self.readyForShowing = YES;
 	self.isHidden = YES;
 	self.isAnimationPresenting = NO;
@@ -140,8 +151,16 @@
 							 self.isAnimationPresenting = NO;
 							 self.isHidden = NO;
 							 self.readyForShowing = NO;
-							 [self performOptionSelector:@selector(menuViewDidShow:) on:delegate withObject:self];
+							 [self itemDidShow];
 						 }];
+	}
+}
+
+- (void)itemDidShow {
+	_completionCount++;
+	if (_completionCount == self.items.count) {
+		[self performOptionSelector:@selector(menuViewDidShow:) on:self.delegate withObject:self];
+		_completionCount = 0;
 	}
 }
 
@@ -176,9 +195,17 @@
 							 self.isAnimationPresenting = NO;
 							 self.isHidden = YES;
 							 self.readyForShowing = NO;
-							 [self performOptionSelector:@selector(menuViewDidHide:) on:delegate withObject:self];
-							 [self prepare];
+							 [self itemDidHide];
 						 }];
+	}
+}
+
+- (void)itemDidHide {
+	_completionCount++;
+	if (_completionCount == self.items.count) {
+		[self performOptionSelector:@selector(menuViewDidHide:) on:self.delegate withObject:self];
+		[self prepare];
+		_completionCount = 0;
 	}
 }
 
@@ -226,6 +253,11 @@
 }
 
 - (void)viewDidTap:(UITapGestureRecognizer *)recognizer {
+	if (recognizer == self.dismissTapGesture) {
+		[self hide];
+		return;
+	}
+	
 	NSObject<PUMenuViewDelegate> *delegate = self.delegate;
 	if ([delegate respondsToSelector:@selector(menuView:itemDidSelectAtIndex:)]) {
 		[delegate menuView:self itemDidSelectAtIndex:recognizer.view.tag - TAG_BASE];
