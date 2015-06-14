@@ -16,8 +16,8 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "PUMenuView"
-  s.version      = "1.0.0"
-  s.summary      = "Popping up menu view with full autolayout support"
+  s.version      = "1.0.1"
+  s.summary      = "PUMenuView is a tumblr style popping menu view. It is built with Objective C and fully backed by Auto Layout."
 
   s.description  = <<-DESC
                    A longer description of Peanut in Markdown format.
@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage     = "https://github.com/null09264/PUMenuView"
-  # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
+  s.screenshots  = "https://cloud.githubusercontent.com/assets/4215068/8149565/3aacba74-12fa-11e5-961a-f8d41ac4d323.png"
 
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -53,8 +53,8 @@ Pod::Spec.new do |s|
   #
 
   s.author             = { "Wang Jinghan" => "phantom.there@gmail.com" }
-  # Or just: s.author    = "Wang Jinghan"
-  # s.authors            = { "Wang Jinghan" => "phantom.there@gmail.com" }
+  s.social_media_url = 'https://twitter.com/null09264'
+  
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -71,7 +71,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/null09264/PUMenuView.git", :tag => "1.0.0", :commit => "f2a695427f2a53612bcc586e48935b6279f8dd8e" }
+  s.source       = { :git => "https://github.com/null09264/PUMenuView.git", :tag => "1.0.1", :commit => "a21aa89b81d376ffd7589be8b01be50c23026512" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
