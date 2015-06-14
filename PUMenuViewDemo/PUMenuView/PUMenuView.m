@@ -131,143 +131,6 @@
 	self.verticalSpacingLayoutGuideCellTemplate = guide;
 }
 
-- (void)addCell: (UIView *)cell {
-	//update constraints
-	NSMutableArray *cells = self.cells;
-    cell.translatesAutoresizingMaskIntoConstraints = NO;
-	NSInteger index = cells.count;
-	NSInteger row = index / NUMBER_OF_COLUMN;
-	NSInteger column = index % NUMBER_OF_COLUMN;
-    
-    [self addSubview:cell];
-    
-    //constraint: cell.width = cellTemplate.width
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:cell
-                                                     attribute:NSLayoutAttributeWidth
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self.cellTemplate
-                                                     attribute:NSLayoutAttributeWidth
-                                                    multiplier:1
-                                                      constant:0]];
-    
-	//constraint: cell.width = cell.height
-	[cell addConstraint:[NSLayoutConstraint constraintWithItem:cell
-													 attribute:NSLayoutAttributeWidth
-													 relatedBy:NSLayoutRelationEqual
-														toItem:cell
-													 attribute:NSLayoutAttributeHeight
-													multiplier:1
-													  constant:0]];
-	
-	//set horizontal constraints for guide cells
-	if (row == 0) {
-        UIView *positionLayoutGuide = [self positionGuideCellForColumnAtIndex:column];
-        UIView *container = self.positionLayoutGuideContainer;
-		switch (column) {
-			case 0: {
-				[self addConstraint:[NSLayoutConstraint constraintWithItem:container
-                                                                 attribute:NSLayoutAttributeLeading
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:positionLayoutGuide
-                                                                 attribute:NSLayoutAttributeLeading
-                                                                multiplier:1
-                                                                  constant:0]];
-                NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:container
-                                                                              attribute:NSLayoutAttributeTrailing
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:positionLayoutGuide
-                                                                              attribute:NSLayoutAttributeTrailing
-                                                                             multiplier:1
-                                                                               constant:0];
-                [self addConstraint:constraint];
-                self.trailingLayoutConstraint = constraint;
-			} break;
-				
-			default: {
-                NSLayoutConstraint *oldTrailingConstraint = self.trailingLayoutConstraint;
-                [self removeConstraint:oldTrailingConstraint];
-                NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:container
-                                                                              attribute:NSLayoutAttributeTrailing
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:positionLayoutGuide
-                                                                              attribute:NSLayoutAttributeTrailing
-                                                                             multiplier:1
-                                                                               constant:0];
-                [self addConstraint:constraint];
-                self.trailingLayoutConstraint = constraint;
-			} break;
-		}
-	}
-    
-    //align the cell vertically with the guide cell for this row
-    {
-        UIView *layoutGuideForCurrentColumn = [self positionGuideCellForColumnAtIndex:column];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:cell
-                                                         attribute:NSLayoutAttributeCenterX
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:layoutGuideForCurrentColumn
-                                                         attribute:NSLayoutAttributeCenterX
-                                                        multiplier:1
-                                                          constant:0]];
-	}
-
-	
-    
-	//set vertical constraints for guide cells
-	if (column == 0) {
-        UIView *positionLayoutGuide = [self positionGuideCellForRowAtIndex:row];
-        UIView *container = self.positionLayoutGuideContainer;
-		switch (row) {
-			case 0: {
-                [self addConstraint:[NSLayoutConstraint constraintWithItem:container
-                                                                 attribute:NSLayoutAttributeTop
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:positionLayoutGuide
-                                                                 attribute:NSLayoutAttributeTop
-                                                                multiplier:1
-                                                                  constant:0]];
-                NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:container
-                                                                              attribute:NSLayoutAttributeBottom
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:positionLayoutGuide
-                                                                              attribute:NSLayoutAttributeBottom
-                                                                             multiplier:1
-                                                                               constant:0];
-                [self addConstraint:constraint];
-                self.bottomLayoutConstraint = constraint;
-			} break;
-				
-			default: {
-                NSLayoutConstraint *oldBottomConstraint = self.bottomLayoutConstraint;
-                [self removeConstraint:oldBottomConstraint];
-                NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:container
-                                                                              attribute:NSLayoutAttributeBottom
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:positionLayoutGuide
-                                                                              attribute:NSLayoutAttributeBottom
-                                                                             multiplier:1
-                                                                               constant:0];
-                [self addConstraint:constraint];
-                self.bottomLayoutConstraint = constraint;
-			} break;
-		}
-	}
-    
-    {
-        UIView *layoutGuideForCurrentRow = [self positionGuideCellForRowAtIndex:row];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:cell
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:layoutGuideForCurrentRow
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1
-                                                          constant:0]];
-    }
-
-	
-	[cells addObject:cell];
-}
-
 - (UIView *)positionGuideCellForRowAtIndex:(NSInteger)index {
     NSAssert(index >= 0, @"Row index must be non-negative");
     
@@ -425,6 +288,143 @@
     return guideCell;
 }
 
+- (void)addCell:(UIView *)cell {
+    //update constraints
+    NSMutableArray *cells = self.cells;
+    cell.translatesAutoresizingMaskIntoConstraints = NO;
+    NSInteger index = cells.count;
+    NSInteger row = index / NUMBER_OF_COLUMN;
+    NSInteger column = index % NUMBER_OF_COLUMN;
+    
+    [self addSubview:cell];
+    
+    //constraint: cell.width = cellTemplate.width
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:cell
+                                                     attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self.cellTemplate
+                                                     attribute:NSLayoutAttributeWidth
+                                                    multiplier:1
+                                                      constant:0]];
+    
+    //constraint: cell.width = cell.height
+    [cell addConstraint:[NSLayoutConstraint constraintWithItem:cell
+                                                     attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:cell
+                                                     attribute:NSLayoutAttributeHeight
+                                                    multiplier:1
+                                                      constant:0]];
+    
+    //set horizontal constraints for guide cells
+    if (row == 0) {
+        UIView *positionLayoutGuide = [self positionGuideCellForColumnAtIndex:column];
+        UIView *container = self.positionLayoutGuideContainer;
+        switch (column) {
+            case 0: {
+                [self addConstraint:[NSLayoutConstraint constraintWithItem:container
+                                                                 attribute:NSLayoutAttributeLeading
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:positionLayoutGuide
+                                                                 attribute:NSLayoutAttributeLeading
+                                                                multiplier:1
+                                                                  constant:0]];
+                NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:container
+                                                                              attribute:NSLayoutAttributeTrailing
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:positionLayoutGuide
+                                                                              attribute:NSLayoutAttributeTrailing
+                                                                             multiplier:1
+                                                                               constant:0];
+                [self addConstraint:constraint];
+                self.trailingLayoutConstraint = constraint;
+            } break;
+                
+            default: {
+                NSLayoutConstraint *oldTrailingConstraint = self.trailingLayoutConstraint;
+                [self removeConstraint:oldTrailingConstraint];
+                NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:container
+                                                                              attribute:NSLayoutAttributeTrailing
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:positionLayoutGuide
+                                                                              attribute:NSLayoutAttributeTrailing
+                                                                             multiplier:1
+                                                                               constant:0];
+                [self addConstraint:constraint];
+                self.trailingLayoutConstraint = constraint;
+            } break;
+        }
+    }
+    
+    //align the cell vertically with the guide cell for this column
+    {
+        UIView *layoutGuideForCurrentColumn = [self positionGuideCellForColumnAtIndex:column];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:cell
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:layoutGuideForCurrentColumn
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1
+                                                          constant:0]];
+    }
+    
+    
+    
+    //set vertical constraints for guide cells
+    if (column == 0) {
+        UIView *positionLayoutGuide = [self positionGuideCellForRowAtIndex:row];
+        UIView *container = self.positionLayoutGuideContainer;
+        switch (row) {
+            case 0: {
+                [self addConstraint:[NSLayoutConstraint constraintWithItem:container
+                                                                 attribute:NSLayoutAttributeTop
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:positionLayoutGuide
+                                                                 attribute:NSLayoutAttributeTop
+                                                                multiplier:1
+                                                                  constant:0]];
+                NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:container
+                                                                              attribute:NSLayoutAttributeBottom
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:positionLayoutGuide
+                                                                              attribute:NSLayoutAttributeBottom
+                                                                             multiplier:1
+                                                                               constant:0];
+                [self addConstraint:constraint];
+                self.bottomLayoutConstraint = constraint;
+            } break;
+                
+            default: {
+                NSLayoutConstraint *oldBottomConstraint = self.bottomLayoutConstraint;
+                [self removeConstraint:oldBottomConstraint];
+                NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:container
+                                                                              attribute:NSLayoutAttributeBottom
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:positionLayoutGuide
+                                                                              attribute:NSLayoutAttributeBottom
+                                                                             multiplier:1
+                                                                               constant:0];
+                [self addConstraint:constraint];
+                self.bottomLayoutConstraint = constraint;
+            } break;
+        }
+    }
+    
+    //align the cell horizontally with the guide cell for this row
+    {
+        UIView *layoutGuideForCurrentRow = [self positionGuideCellForRowAtIndex:row];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:cell
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:layoutGuideForCurrentRow
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1
+                                                          constant:0]];
+    }
+    
+    
+    [cells addObject:cell];
+}
 
 - (void)reloadContent {
 	
