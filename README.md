@@ -11,7 +11,6 @@ PUMenuView is a "tumblr" style popping menu view. It is built with Objective C a
 
 ####DataSource Methods
 
-=====
 
 #####Necessary:
 ```objc
