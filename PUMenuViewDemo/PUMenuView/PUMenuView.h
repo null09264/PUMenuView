@@ -29,6 +29,7 @@
 @property id<PUMenuViewDelegate> delegate;
 @property id<PUMenuViewDataSource> dataSource;
 
+- (void)addCell:(UIView *)cell;
 - (void)reloadContent;
 
 @end
