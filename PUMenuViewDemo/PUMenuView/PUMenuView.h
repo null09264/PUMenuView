@@ -12,15 +12,15 @@
 
 @protocol PUMenuViewDataSource
 
-- (NSInteger) numberOfCellsInmenuView:(PUMenuView *) menuView;
-- (UIImage *) menuView:(PUMenuView *) menuView iconForCellAtIndex: (NSInteger) index;
-- (NSString *) menuView:(PUMenuView *) menuView titleForCellAtIndex: (NSInteger) index;
+- (NSInteger) numberOfItemsInmenuView:(PUMenuView *) menuView;
+- (UIImage *) menuView:(PUMenuView *) menuView iconForItemAtIndex: (NSInteger) index;
+- (NSString *) menuView:(PUMenuView *) menuView titleForItemAtIndex: (NSInteger) index;
 
 @end
 
 @protocol PUMenuViewDelegate
 
-- (void) menuView:(PUMenuView *) menuView cellDidSelectAtIndex: (NSInteger) index;
+- (void) menuView:(PUMenuView *) menuView itemDidSelectAtIndex: (NSInteger) index;
 
 @end
 
@@ -29,7 +29,7 @@
 @property id<PUMenuViewDelegate> delegate;
 @property id<PUMenuViewDataSource> dataSource;
 
-- (void)addCell:(UIView *)cell;
+- (void)addItem:(UIView *)item;
 - (void)reloadContent;
 
 @end

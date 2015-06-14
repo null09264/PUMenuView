@@ -31,10 +31,10 @@
 	// Dispose of any resources that can be recreated.
 }
 
-- (IBAction)addCell:(id)sender {
-    UIView *cell = [UIView new];
-    cell.backgroundColor = [UIColor blackColor];
-    [self.menuView addCell:cell];
+- (IBAction)addItem:(id)sender {
+    UIView *item = [UIView new];
+    item.backgroundColor = [UIColor blackColor];
+    [self.menuView addItem:item];
     [self.menuView setNeedsLayout];
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void){
         [self.menuView layoutIfNeeded];

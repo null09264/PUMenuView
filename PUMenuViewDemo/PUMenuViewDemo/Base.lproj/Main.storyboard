@@ -16,13 +16,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="21b-ji-96T">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="21b-ji-96T">
                                 <rect key="frame" x="270.5" y="550" width="59" height="30"/>
-                                <state key="normal" title="Add Cell">
+                                <state key="normal" title="Add Item">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="addCell:" destination="rfM-yc-osH" eventType="touchUpInside" id="10i-Db-N1R"/>
+                                    <action selector="addItem:" destination="rfM-yc-osH" eventType="touchUpInside" id="10i-Db-N1R"/>
                                 </connections>
                             </button>
                         </subviews>

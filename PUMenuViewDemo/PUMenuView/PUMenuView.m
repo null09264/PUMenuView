@@ -9,32 +9,32 @@
 #import "PUMenuView.h"
 
 #define NUMBER_OF_COLUMN 3
-#define CELL_SIDE_LENGTH_MULTIPLIER 1/5.0
+#define ITEM_SIDE_LENGTH_MULTIPLIER 1/5.0
 #define VERTICAL_SPACE_MULTIPLIER 1/12.0
 #define HORIZONTAL_MARGIN_MULTIPLIER 1/12.0
-#define HORIZONTAL_SPACING_MULTIPLIER (1 - 2 * HORIZONTAL_MARGIN_MULTIPLIER - 3 * CELL_SIDE_LENGTH_MULTIPLIER) / (NUMBER_OF_COLUMN - 1)
+#define HORIZONTAL_SPACING_MULTIPLIER (1 - 2 * HORIZONTAL_MARGIN_MULTIPLIER - 3 * ITEM_SIDE_LENGTH_MULTIPLIER) / (NUMBER_OF_COLUMN - 1)
 
 @interface PUMenuView ()
 
-@property UIView *cellTemplate;
+@property UIView *itemTemplate;
 
 @property UIView *positionLayoutGuideContainer;
 
-@property UIView *horizontalSpacingLayoutGuideCellTemplate;
-@property NSMutableDictionary *horizontalPositionLayoutGuideCells;
-@property NSMutableDictionary *horizontalSpacingLayoutGuideCells;
+@property UIView *horizontalSpacingLayoutGuideItemTemplate;
+@property NSMutableDictionary *horizontalPositionLayoutGuideItems;
+@property NSMutableDictionary *horizontalSpacingLayoutGuideItems;
 
-@property UIView *verticalSpacingLayoutGuideCellTemplate;
-@property NSMutableDictionary *verticalPositionLayoutGuideCells;
-@property NSMutableDictionary *verticalSpacingLayoutGuideCells;
+@property UIView *verticalSpacingLayoutGuideItemTemplate;
+@property NSMutableDictionary *verticalPositionLayoutGuideItems;
+@property NSMutableDictionary *verticalSpacingLayoutGuideItems;
 
 @property NSLayoutConstraint *trailingLayoutConstraint;
 @property NSLayoutConstraint *bottomLayoutConstraint;
 
 
-//cells
-@property NSMutableArray *cells;
-@property NSMutableArray *cellVerticalConstraints;
+//items
+@property NSMutableArray *items;
+@property NSMutableArray *itemVerticalConstraints;
 
 @end
 
@@ -43,34 +43,48 @@
 - (instancetype)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if (self) {
-		self.cells = [[NSMutableArray alloc]init];
+		self.items = [[NSMutableArray alloc]init];
         [self setUpLayoutGuides];
 	}
 	return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame andCapacity:(NSInteger)numberOfMenuItems {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.items = [[NSMutableArray alloc]init];
+        [self setUpLayoutGuides];
+    }
+    return self;
+}
+
+#pragma mark - item filling
+
+
+#pragma mark - constraint configuration
+
 - (void)setUpLayoutGuides {
-    [self setUpCellTemplate];
+    [self setUpItemTemplate];
 	[self setUpPositionLayoutGuideContainer];
-	[self setUpHorizontalSpacingLayoutGuideCellTemplate];
+	[self setUpHorizontalSpacingLayoutGuideItemTemplate];
 	[self setUpVerticalSpacingLayoutGuide];
 }
 
-- (void)setUpCellTemplate {
+- (void)setUpItemTemplate {
     UIView *template = [[UIView alloc]init];
     template.translatesAutoresizingMaskIntoConstraints = NO;
     [self insertSubview:template atIndex:0];
     
-    //constraint: cell.width = x * self.width
+    //constraint: item.width = x * self.width
     [self addConstraint:[NSLayoutConstraint constraintWithItem:template
                                                          attribute:NSLayoutAttributeWidth
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:self
                                                          attribute:NSLayoutAttributeWidth
-                                                        multiplier:CELL_SIDE_LENGTH_MULTIPLIER
+                                                        multiplier:ITEM_SIDE_LENGTH_MULTIPLIER
                                                           constant:0]];
     
-    //constraint: cell.width = cell.height
+    //constraint: item.width = item.height
     [template addConstraint:[NSLayoutConstraint constraintWithItem:template
                                                      attribute:NSLayoutAttributeWidth
                                                      relatedBy:NSLayoutRelationEqual
@@ -78,7 +92,7 @@
                                                      attribute:NSLayoutAttributeHeight
                                                     multiplier:1
                                                       constant:0]];
-    self.cellTemplate = template;
+    self.itemTemplate = template;
 }
 
 - (void)setUpPositionLayoutGuideContainer {
@@ -103,7 +117,7 @@
 	self.positionLayoutGuideContainer = container;
 }
 
-- (void)setUpHorizontalSpacingLayoutGuideCellTemplate {
+- (void)setUpHorizontalSpacingLayoutGuideItemTemplate {
 	UIView *template = [[UIView alloc]init];
     template.translatesAutoresizingMaskIntoConstraints = NO;
     [self insertSubview:template atIndex:0];
@@ -114,7 +128,7 @@
 													 attribute:NSLayoutAttributeWidth
 													multiplier:HORIZONTAL_SPACING_MULTIPLIER
 													  constant:0]];
-	self.horizontalSpacingLayoutGuideCellTemplate = template;
+	self.horizontalSpacingLayoutGuideItemTemplate = template;
 }
 
 - (void)setUpVerticalSpacingLayoutGuide {
@@ -128,31 +142,31 @@
 													 attribute:NSLayoutAttributeHeight
 													multiplier:VERTICAL_SPACE_MULTIPLIER
 													  constant:0]];
-	self.verticalSpacingLayoutGuideCellTemplate = guide;
+	self.verticalSpacingLayoutGuideItemTemplate = guide;
 }
 
-- (UIView *)positionGuideCellForRowAtIndex:(NSInteger)index {
+- (UIView *)positionGuideItemForRowAtIndex:(NSInteger)index {
     NSAssert(index >= 0, @"Row index must be non-negative");
     
-    NSMutableDictionary *guideCells = self.verticalPositionLayoutGuideCells;
+    NSMutableDictionary *guideItems = self.verticalPositionLayoutGuideItems;
     NSNumber *indexKey = [NSNumber numberWithInteger:index];
-    UIView *guideCell = [guideCells objectForKey:indexKey];
+    UIView *guideItem = [guideItems objectForKey:indexKey];
     
-    if (!guideCell) {
-        guideCell = [[UIView alloc]init];   
-        guideCell.translatesAutoresizingMaskIntoConstraints = NO;
-        [self insertSubview:guideCell atIndex:0];
+    if (!guideItem) {
+        guideItem = [[UIView alloc]init];   
+        guideItem.translatesAutoresizingMaskIntoConstraints = NO;
+        [self insertSubview:guideItem atIndex:0];
 
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:guideCell
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:guideItem
                                                          attribute:NSLayoutAttributeHeight
                                                          relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.cellTemplate
+                                                            toItem:self.itemTemplate
                                                          attribute:NSLayoutAttributeHeight
                                                         multiplier:1
                                                           constant:0]];
         if (index == 0) {
             //constraint with top
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:guideCell
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:guideItem
                                                              attribute:NSLayoutAttributeTop
                                                              relatedBy:NSLayoutRelationEqual
                                                                 toItem:self.positionLayoutGuideContainer
@@ -160,78 +174,78 @@
                                                             multiplier:1
                                                               constant:0]];
         } else {
-            //constraint with spacingGuideCell bottom
-            UIView *spacingGuideCell = [self spacingGuideCellAfterRowAtIndex:index - 1];
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:guideCell
+            //constraint with spacingGuideItem bottom
+            UIView *spacingGuideItem = [self spacingGuideItemAfterRowAtIndex:index - 1];
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:guideItem
                                                              attribute:NSLayoutAttributeTop
                                                              relatedBy:NSLayoutRelationEqual
-                                                                toItem:spacingGuideCell
+                                                                toItem:spacingGuideItem
                                                              attribute:NSLayoutAttributeBottom
                                                             multiplier:1
                                                               constant:0]];
         }
         
-        [guideCells setObject:guideCell forKey:indexKey];
+        [guideItems setObject:guideItem forKey:indexKey];
     }
     
-    return guideCell;
+    return guideItem;
 }
 
-- (UIView *)spacingGuideCellAfterRowAtIndex:(NSInteger)index {
+- (UIView *)spacingGuideItemAfterRowAtIndex:(NSInteger)index {
     NSAssert(index >= 0, @"Row index must be non-negative");
     
-    NSMutableDictionary *guideCells = self.verticalSpacingLayoutGuideCells;
+    NSMutableDictionary *guideItems = self.verticalSpacingLayoutGuideItems;
     NSNumber *indexKey = [NSNumber numberWithInteger:index];
-    UIView *guideCell = [guideCells objectForKey:indexKey];
+    UIView *guideItem = [guideItems objectForKey:indexKey];
     
-    if (!guideCell) {
-        guideCell = [[UIView alloc]init];
-        guideCell.translatesAutoresizingMaskIntoConstraints = NO;
-        [self insertSubview:guideCell atIndex:0];
+    if (!guideItem) {
+        guideItem = [[UIView alloc]init];
+        guideItem.translatesAutoresizingMaskIntoConstraints = NO;
+        [self insertSubview:guideItem atIndex:0];
         
         
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:guideCell
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:guideItem
                                                          attribute:NSLayoutAttributeHeight
                                                          relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.verticalSpacingLayoutGuideCellTemplate
+                                                            toItem:self.verticalSpacingLayoutGuideItemTemplate
                                                          attribute:NSLayoutAttributeHeight
                                                         multiplier:1
                                                           constant:0]];
-        UIView *positionGuideCell = [self positionGuideCellForRowAtIndex:index];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:guideCell
+        UIView *positionGuideItem = [self positionGuideItemForRowAtIndex:index];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:guideItem
                                                          attribute:NSLayoutAttributeTop
                                                          relatedBy:NSLayoutRelationEqual
-                                                            toItem:positionGuideCell
+                                                            toItem:positionGuideItem
                                                          attribute:NSLayoutAttributeBottom
                                                         multiplier:1
                                                           constant:0]];
-        [guideCells setObject:guideCell forKey:indexKey];
+        [guideItems setObject:guideItem forKey:indexKey];
     }
     
-    return guideCell;
+    return guideItem;
 }
 
-- (UIView *)positionGuideCellForColumnAtIndex:(NSInteger)index {
+- (UIView *)positionGuideItemForColumnAtIndex:(NSInteger)index {
     NSAssert(index >= 0, @"Column index must be non-negative");
     
-    NSMutableDictionary *guideCells = self.horizontalPositionLayoutGuideCells;
+    NSMutableDictionary *guideItems = self.horizontalPositionLayoutGuideItems;
     NSNumber *indexKey = [NSNumber numberWithInteger:index];
-    UIView *guideCell = [guideCells objectForKey:indexKey];
+    UIView *guideItem = [guideItems objectForKey:indexKey];
     
-    if (!guideCell) {
-        guideCell = [[UIView alloc]init];
-        guideCell.translatesAutoresizingMaskIntoConstraints = NO;
-        [self insertSubview:guideCell atIndex:0];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:guideCell
+    if (!guideItem) {
+        guideItem = [[UIView alloc]init];
+        guideItem.translatesAutoresizingMaskIntoConstraints = NO;
+        [self insertSubview:guideItem atIndex:0];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:guideItem
                                                          attribute:NSLayoutAttributeWidth
                                                          relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.cellTemplate
+                                                            toItem:self.itemTemplate
                                                          attribute:NSLayoutAttributeWidth
                                                         multiplier:1
                                                           constant:0]];
         if (index == 0) {
             //constraint with leading
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:guideCell
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:guideItem
                                                              attribute:NSLayoutAttributeLeading
                                                              relatedBy:NSLayoutRelationEqual
                                                                 toItem:self.positionLayoutGuideContainer
@@ -239,86 +253,86 @@
                                                             multiplier:1
                                                               constant:0]];
         } else {
-            //constraint with spacingGuideCell trailing
-            UIView *spacingGuideCell = [self spacingGuideCellAfterColumnAtIndex:index - 1];
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:guideCell
+            //constraint with spacingGuideItem trailing
+            UIView *spacingGuideItem = [self spacingGuideItemAfterColumnAtIndex:index - 1];
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:guideItem
                                                              attribute:NSLayoutAttributeLeading
                                                              relatedBy:NSLayoutRelationEqual
-                                                                toItem:spacingGuideCell
+                                                                toItem:spacingGuideItem
                                                              attribute:NSLayoutAttributeTrailing
                                                             multiplier:1
                                                               constant:0]];
         }
         
-        [guideCells setObject:guideCell forKey:indexKey];
+        [guideItems setObject:guideItem forKey:indexKey];
     }
     
-    return guideCell;
+    return guideItem;
 }
 
-- (UIView *)spacingGuideCellAfterColumnAtIndex:(NSInteger)index {
+- (UIView *)spacingGuideItemAfterColumnAtIndex:(NSInteger)index {
     NSAssert(index >= 0, @"Column index must be non-negative");
     
-    NSMutableDictionary *guideCells = self.horizontalSpacingLayoutGuideCells;
+    NSMutableDictionary *guideItems = self.horizontalSpacingLayoutGuideItems;
     NSNumber *indexKey = [NSNumber numberWithInteger:index];
-    UIView *guideCell = [guideCells objectForKey:indexKey];
+    UIView *guideItem = [guideItems objectForKey:indexKey];
     
-    if (!guideCell) {
-        guideCell = [[UIView alloc]init];
-        guideCell.translatesAutoresizingMaskIntoConstraints = NO;
-        [self insertSubview:guideCell atIndex:0];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:guideCell
+    if (!guideItem) {
+        guideItem = [[UIView alloc]init];
+        guideItem.translatesAutoresizingMaskIntoConstraints = NO;
+        [self insertSubview:guideItem atIndex:0];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:guideItem
                                                          attribute:NSLayoutAttributeWidth
                                                          relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.horizontalSpacingLayoutGuideCellTemplate
+                                                            toItem:self.horizontalSpacingLayoutGuideItemTemplate
                                                          attribute:NSLayoutAttributeWidth
                                                         multiplier:1
                                                           constant:0]];
-        UIView *positionGuideCell = [self positionGuideCellForColumnAtIndex:index];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:guideCell
+        UIView *positionGuideItem = [self positionGuideItemForColumnAtIndex:index];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:guideItem
                                                          attribute:NSLayoutAttributeLeading
                                                          relatedBy:NSLayoutRelationEqual
-                                                            toItem:positionGuideCell
+                                                            toItem:positionGuideItem
                                                          attribute:NSLayoutAttributeTrailing
                                                         multiplier:1
                                                           constant:0]];
-        [guideCells setObject:guideCell forKey:indexKey];
+        [guideItems setObject:guideItem forKey:indexKey];
     }
     
-    return guideCell;
+    return guideItem;
 }
 
-- (void)addCell:(UIView *)cell {
+- (void)addItem:(UIView *)item {
     //update constraints
-    NSMutableArray *cells = self.cells;
-    cell.translatesAutoresizingMaskIntoConstraints = NO;
-    NSInteger index = cells.count;
+    NSMutableArray *items = self.items;
+    item.translatesAutoresizingMaskIntoConstraints = NO;
+    NSInteger index = items.count;
     NSInteger row = index / NUMBER_OF_COLUMN;
     NSInteger column = index % NUMBER_OF_COLUMN;
     
-    [self addSubview:cell];
+    [self addSubview:item];
     
-    //constraint: cell.width = cellTemplate.width
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:cell
+    //constraint: item.width = itemTemplate.width
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:item
                                                      attribute:NSLayoutAttributeWidth
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:self.cellTemplate
+                                                        toItem:self.itemTemplate
                                                      attribute:NSLayoutAttributeWidth
                                                     multiplier:1
                                                       constant:0]];
     
-    //constraint: cell.width = cell.height
-    [cell addConstraint:[NSLayoutConstraint constraintWithItem:cell
+    //constraint: item.width = item.height
+    [item addConstraint:[NSLayoutConstraint constraintWithItem:item
                                                      attribute:NSLayoutAttributeWidth
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:cell
+                                                        toItem:item
                                                      attribute:NSLayoutAttributeHeight
                                                     multiplier:1
                                                       constant:0]];
     
-    //set horizontal constraints for guide cells
+    //set horizontal constraints for guide items
     if (row == 0) {
-        UIView *positionLayoutGuide = [self positionGuideCellForColumnAtIndex:column];
+        UIView *positionLayoutGuide = [self positionGuideItemForColumnAtIndex:column];
         UIView *container = self.positionLayoutGuideContainer;
         switch (column) {
             case 0: {
@@ -356,10 +370,10 @@
         }
     }
     
-    //align the cell vertically with the guide cell for this column
+    //align the item vertically with the guide item for this column
     {
-        UIView *layoutGuideForCurrentColumn = [self positionGuideCellForColumnAtIndex:column];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:cell
+        UIView *layoutGuideForCurrentColumn = [self positionGuideItemForColumnAtIndex:column];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:item
                                                          attribute:NSLayoutAttributeCenterX
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:layoutGuideForCurrentColumn
@@ -370,9 +384,9 @@
     
     
     
-    //set vertical constraints for guide cells
+    //set vertical constraints for guide items
     if (column == 0) {
-        UIView *positionLayoutGuide = [self positionGuideCellForRowAtIndex:row];
+        UIView *positionLayoutGuide = [self positionGuideItemForRowAtIndex:row];
         UIView *container = self.positionLayoutGuideContainer;
         switch (row) {
             case 0: {
@@ -410,10 +424,10 @@
         }
     }
     
-    //align the cell horizontally with the guide cell for this row
+    //align the item horizontally with the guide item for this row
     {
-        UIView *layoutGuideForCurrentRow = [self positionGuideCellForRowAtIndex:row];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:cell
+        UIView *layoutGuideForCurrentRow = [self positionGuideItemForRowAtIndex:row];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:item
                                                          attribute:NSLayoutAttributeCenterY
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:layoutGuideForCurrentRow
@@ -423,7 +437,7 @@
     }
     
     
-    [cells addObject:cell];
+    [items addObject:item];
 }
 
 - (void)reloadContent {
