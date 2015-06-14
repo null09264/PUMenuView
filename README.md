@@ -53,7 +53,7 @@ This method provides the menu the customized views it needs to show. This method
 @property (nonatomic, weak) NSObject<PUMenuViewDelegate> *delegate;
 @property (nonatomic, weak) NSObject<PUMenuViewDataSource> *dataSource;
 
-@property (nonatomic, strong) UIView *backgroundView;
+@property (nonatomic) UIView *backgroundView;
 
 //behavior
 @property (nonatomic) BOOL menuShouldHideAfterSelection;
