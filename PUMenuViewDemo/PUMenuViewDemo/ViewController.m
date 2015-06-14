@@ -43,6 +43,10 @@
 	self.menuView = menuView;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	return UIStatusBarStyleLightContent;
+}
+
 #pragma mark - PUMenuViewDataSource
 
 - (NSInteger)numberOfItemsInMenuView:(PUMenuView *)menuView {
