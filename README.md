@@ -39,7 +39,7 @@ This method provides the menu the customized views it needs to show. This method
 ####Delegate Methods
 
 ```objc
-- (void)menuView:(PUMenuView *) menuView itemDidSelectAtIndex:(NSInteger)index;
+- (void)menuView:(PUMenuView *)menuView itemDidSelectAtIndex:(NSInteger)index;
 - (void)menuViewWillShow:(PUMenuView *)menuView;
 - (void)menuViewDidShow:(PUMenuView *)menuView;
 - (void)menuViewWillHide:(PUMenuView *)menuView;
