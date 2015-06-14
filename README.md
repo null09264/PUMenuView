@@ -9,7 +9,7 @@ PUMenuView is a "tumblr" style popping menu view. It is built with Objective C a
 
 ####Using with CocoaPods
 
-`pod 'PUMenuView', '~> 1.0.0'`
+`pod 'PUMenuView', '~> 1.0.1'`
 
 =====
 
@@ -77,7 +77,7 @@ This method provides the menu the customized views it needs to show. This method
 @property (nonatomic, readonly) CGFloat horizontalSpacingMultiplier;
 ```
 
-##PUMenuItem
+###PUMenuItem
 PUMenuItem is a container which combines a UIButton instance and a UILabel instance. PUMenuItem can be passes to PUMenuView via the datasource method `menuView:viewForItemAtIndex:`. In this case the UIControlEvent for the UIButton inside the PUMenuItem will be picked by the menuView and passed out view the delegate method `menuView:itemDidSelectAtIndex:`.
 
 ####Parameters
