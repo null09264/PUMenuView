@@ -18,13 +18,13 @@ This method is necessary because it feeds the view how many menu items it need t
 -(UIButton *)menuView:(PUMenuView *)menuView buttonForItemAtIndex:(NSInteger)index;
 ```
 
-This method provides the menu the buttons it needs to show. These buttons will serve as the menu items inside the menu. After the buttons are passed in, the menu view will index them and assign the index to their tags. When the buttons are clicked, the delegate method `- (void)menuView:(PUMenuView *) menuView itemDidSelectAtIndex:(NSInteger)index;` will be called.
+This method provides the menu the buttons it needs to show. These buttons will serve as the menu items inside the menu. After the buttons are passed in, the menu view will index them and assign the index to their tags. When the buttons are clicked, the delegate method `menuView: itemDidSelectAtIndex:` will be called.
 
 ```objc
 -(UIView *)menuView:(PUMenuView *)menuView viewForItemAtIndex:(NSInteger)index;
 ```
 
-This method provides the menu the customized views it needs to show. This method has a lower priority than `-(UIButton *)menuView:(PUMenuView *)menuView buttonForItemAtIndex:(NSInteger)index;`, which means when `buttonForItemAtIndex` is implemented in the datasource, this method won't be called. Another difference is these customized views has no related delegate methods to detect user interaction. 
+This method provides the menu the customized views it needs to show. This method has a lower priority than `menuView:menuView buttonForItemAtIndex:`, which means when `menuView:buttonForItemAtIndex:` is implemented in the datasource, this method won't be called. Another difference is these customized views has no related delegate methods to detect user interaction. 
 
 
 ####Delegate Methods
