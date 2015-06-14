@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "PUMenuView"
-  s.version      = "1.0.0-beta"
+  s.version      = "1.0.0"
   s.summary      = "Popping up menu view with full autolayout support"
 
   s.description  = <<-DESC
@@ -71,7 +71,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/null09264/PUMenuView.git", :tag => "1.0.0-beta", :commit => "55e85558c0ff4f6cbd764042579fa3afe8ef3688" }
+  s.source       = { :git => "https://github.com/null09264/PUMenuView.git", :tag => "1.0.0", :commit => "f2a695427f2a53612bcc586e48935b6279f8dd8e" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
