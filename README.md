@@ -78,6 +78,6 @@ PUMenuItem is a container which combines a UIButton instance and a UILabel insta
 
 ####Parameters
 ```objc
-@property UIButton *button;
-@property UILabel *label;
+@property (nonatomic) UIButton *button;
+@property (nonatomic) UILabel *label;
 ```
