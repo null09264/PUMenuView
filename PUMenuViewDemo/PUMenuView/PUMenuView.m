@@ -8,34 +8,26 @@
 
 #import "PUMenuView.h"
 
-#define NUMBER_OF_COLUMN 3
-#define ITEM_SIDE_LENGTH_MULTIPLIER 1/5.0
-#define VERTICAL_SPACE_MULTIPLIER 1/12.0
-#define HORIZONTAL_MARGIN_MULTIPLIER 1/12.0
-#define HORIZONTAL_SPACING_MULTIPLIER (1 - 2 * HORIZONTAL_MARGIN_MULTIPLIER - 3 * ITEM_SIDE_LENGTH_MULTIPLIER) / (NUMBER_OF_COLUMN - 1)
 #define BUTTON_TAG_BASE 9743
 
 @interface PUMenuView ()
 
+//layout accessory views
 @property UIView *itemTemplate;
-
 @property UIView *positionLayoutGuideContainer;
-
 @property UIView *horizontalSpacingLayoutGuideItemTemplate;
 @property NSMutableDictionary *horizontalPositionLayoutGuideItems;
 @property NSMutableDictionary *horizontalSpacingLayoutGuideItems;
-
 @property UIView *verticalSpacingLayoutGuideItemTemplate;
 @property NSMutableDictionary *verticalPositionLayoutGuideItems;
 @property NSMutableDictionary *verticalSpacingLayoutGuideItems;
 
+//explicit constraints
 @property NSLayoutConstraint *trailingLayoutConstraint;
 @property NSLayoutConstraint *bottomLayoutConstraint;
 
-
-//items
+//visible items
 @property NSMutableArray *items;
-@property NSMutableArray *itemVerticalConstraints;
 
 @end
 
@@ -45,14 +37,120 @@
 	self = [super initWithFrame:frame];
 	if (self) {
 		self.items = [[NSMutableArray alloc]init];
-        [self setUpLayoutGuides];
+		[self registerDefaults];
 	}
 	return self;
 }
 
+- (void)registerDefaults {
+	//behavior
+	self.menuShouldHideAfterSelection = YES;
+	
+	//animations
+	self.animationUnitDelay = 0.05;
+	self.animationSpringDamping = 0.8;
+	self.animationDuration = 0.5;
+	
+	//layouts
+	self.numberOfColumns = 3;
+	self.itemSideLengthMultiplier = 1/5.0;
+	self.verticalSpaceMultiplier = 1/15.0;
+	self.horizontalMarginMultiplier = 1/12.0;
+}
+
+- (CGFloat)horizontalSpacingMultiplier {
+	return (1 - 2 * self.horizontalMarginMultiplier - 3 * self.itemSideLengthMultiplier) / (self.numberOfColumns - 1);
+}
+
 - (void)setDataSource:(NSObject<PUMenuViewDataSource> *)dataSource {
     _dataSource = dataSource;
+	[self setUpLayoutGuides];
     [self setUpItems];
+	[self prepare];
+}
+
+#pragma mark - show and hide animation
+
+- (void)prepare {
+	if (self.readyForShowing && self.isAnimationPresenting) {
+		return;
+	}
+	[self setNeedsLayout];
+	[self layoutIfNeeded];
+	
+	for (UIView *item in self.items) {
+		CGPoint center = item.center;
+		center.y += CGRectGetHeight([UIScreen mainScreen].bounds);
+		item.center = center;
+		item.alpha = 0;
+	}
+	
+	self.readyForShowing = YES;
+	self.isHidden = YES;
+	self.isAnimationPresenting = NO;
+}
+
+- (void)show {
+	[self prepare];
+	
+	if (self.isAnimationPresenting || !self.isHidden || !self.readyForShowing) {
+		return;
+	}
+	
+	NSObject<PUMenuViewDelegate> *delegate = self.delegate;
+	[self performOptionSelector:@selector(menuViewWillShow:) on:delegate withObject:self];
+	self.isAnimationPresenting = YES;
+	for (int i = 0; i < self.items.count; i++) {
+		UIView *item = self.items[i];
+		[item setNeedsLayout];
+		[UIView animateWithDuration:self.animationDuration
+							  delay:self.animationUnitDelay * i
+			 usingSpringWithDamping:self.animationSpringDamping
+			  initialSpringVelocity:0
+							options:UIViewAnimationOptionCurveEaseInOut
+						 animations:^(void) {
+							 item.alpha = 1;
+							 [item layoutIfNeeded];
+						 } completion:^(BOOL finished){
+							 self.isAnimationPresenting = NO;
+							 self.isHidden = NO;
+							 self.readyForShowing = NO;
+							 [self performOptionSelector:@selector(menuViewDidShow:) on:delegate withObject:self];
+						 }];
+	}
+}
+
+- (void)hide {
+	
+	if (self.isAnimationPresenting || self.isHidden || self.readyForShowing) {
+		return;
+	}
+	
+	NSObject<PUMenuViewDelegate> *delegate = self.delegate;
+	[self performOptionSelector:@selector(menuViewWillHide:) on:delegate withObject:self];
+	self.isAnimationPresenting = YES;
+	for (int i = 0; i < self.items.count; i++) {
+		UIView *item = self.items[i];
+		[item setNeedsLayout];
+		[UIView animateWithDuration:self.animationDuration
+							  delay:self.animationUnitDelay * i
+			 usingSpringWithDamping:self.animationSpringDamping
+			  initialSpringVelocity:0
+							options:UIViewAnimationOptionCurveEaseIn
+						 animations:^(void) {
+							 CGPoint center = item.center;
+							 CGFloat farestDistance = CGRectGetHeight(self.positionLayoutGuideContainer.bounds)/2 + self.positionLayoutGuideContainer.center.y;
+							 center.y -= farestDistance;
+							 item.center = center;
+							 item.alpha = 0;
+						 } completion:^(BOOL finished){
+							 self.isAnimationPresenting = NO;
+							 self.isHidden = YES;
+							 self.readyForShowing = NO;
+							 [self performOptionSelector:@selector(menuViewDidHide:) on:delegate withObject:self];
+							 [self prepare];
+						 }];
+	}
 }
 
 #pragma mark - button configuration
@@ -83,6 +181,10 @@
     if ([delegate respondsToSelector:@selector(menuView:itemDidSelectAtIndex:)]) {
         [delegate menuView:self itemDidSelectAtIndex:button.tag - BUTTON_TAG_BASE];
     }
+	
+	if (self.menuShouldHideAfterSelection) {
+		[self hide];
+	}
 }
 
 
@@ -106,7 +208,7 @@
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:self
                                                          attribute:NSLayoutAttributeWidth
-                                                        multiplier:ITEM_SIDE_LENGTH_MULTIPLIER
+                                                        multiplier:self.itemSideLengthMultiplier
                                                           constant:0]];
     
     //constraint: item.width = item.height
@@ -151,7 +253,7 @@
 													 relatedBy:NSLayoutRelationEqual
 														toItem:self
 													 attribute:NSLayoutAttributeWidth
-													multiplier:HORIZONTAL_SPACING_MULTIPLIER
+													multiplier:self.horizontalSpacingMultiplier
 													  constant:0]];
 	self.horizontalSpacingLayoutGuideItemTemplate = template;
 }
@@ -165,7 +267,7 @@
 													 relatedBy:NSLayoutRelationEqual
 														toItem:self
 													 attribute:NSLayoutAttributeHeight
-													multiplier:VERTICAL_SPACE_MULTIPLIER
+													multiplier:self.verticalSpaceMultiplier
 													  constant:0]];
 	self.verticalSpacingLayoutGuideItemTemplate = guide;
 }
@@ -332,8 +434,9 @@
     NSMutableArray *items = self.items;
     item.translatesAutoresizingMaskIntoConstraints = NO;
     NSInteger index = items.count;
-    NSInteger row = index / NUMBER_OF_COLUMN;
-    NSInteger column = index % NUMBER_OF_COLUMN;
+	NSInteger numberOfColumns = self.numberOfColumns;
+    NSInteger row = index / numberOfColumns;
+    NSInteger column = index % numberOfColumns;
     
     [self addSubview:item];
     
@@ -464,5 +567,14 @@
     
     [items addObject:item];
 }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+- (void) performOptionSelector:(SEL)selector on:(NSObject *)subject withObject:(NSObject *)object{
+	if (subject && [subject respondsToSelector:selector]) {
+		[subject performSelector:selector withObject:object];
+	}
+}
+#pragma clang diagnostic pop
 
 @end

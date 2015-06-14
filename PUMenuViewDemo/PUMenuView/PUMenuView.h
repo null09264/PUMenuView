@@ -16,22 +16,52 @@
 
 @optional
 - (UIButton *) menuView:(PUMenuView *) menuView buttonForItemAtIndex:(NSInteger) index;
+
+//This method will not be called if 'menuView:buttonForItemAtIndex:' is implemented in datasource
 - (UIView *) menuView:(PUMenuView *) menuView viewForItemAtIndex:(NSInteger) index;
 
 @end
 
+
 @protocol PUMenuViewDelegate
 
 @optional
+
 - (void) menuView:(PUMenuView *) menuView itemDidSelectAtIndex: (NSInteger) index;
+- (void) menuViewWillShow:(PUMenuView *) menuView;
+- (void) menuViewDidShow:(PUMenuView *) menuView;
+- (void) menuViewWillHide:(PUMenuView *) menuView;
+- (void) menuViewDidHide:(PUMenuView *) menuView;
 
 @end
+
 
 @interface PUMenuView : UIView
 
 @property (nonatomic, weak) NSObject<PUMenuViewDelegate> *delegate;
 @property (nonatomic, weak) NSObject<PUMenuViewDataSource> *dataSource;
 
-- (void)addItem:(UIView *)item;
+//behavior
+@property (nonatomic) BOOL menuShouldHideAfterSelection;
+
+//state
+@property (nonatomic) BOOL isAnimationPresenting;
+@property (nonatomic) BOOL isHidden;
+@property (nonatomic) BOOL readyForShowing;
+
+//animation (show & hide)
+@property (nonatomic) CGFloat animationUnitDelay;
+@property (nonatomic) CGFloat animationSpringDamping;
+@property (nonatomic) CGFloat animationDuration;
+
+//layout
+@property (nonatomic) NSInteger numberOfColumns;
+@property (nonatomic) CGFloat itemSideLengthMultiplier;
+@property (nonatomic) CGFloat verticalSpaceMultiplier;
+@property (nonatomic) CGFloat horizontalMarginMultiplier;
+@property (nonatomic, readonly) CGFloat horizontalSpacingMultiplier;
+
+- (void)show;
+- (void)hide;
 
 @end
