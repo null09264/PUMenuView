@@ -10,7 +10,7 @@
 
 @interface PUMenuItem : UIView
 
-@property UIButton *button;
-@property UILabel *label;
+@property (nonatomic) UIButton *button;
+@property (nonatomic) UILabel *label;
 
 @end
