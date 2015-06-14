@@ -77,8 +77,12 @@ This method provides the menu the customized views it needs to show. This method
 @property (nonatomic, readonly) CGFloat horizontalSpacingMultiplier;
 ```
 
+=====
+
 ###PUMenuItem
 PUMenuItem is a container which combines a UIButton instance and a UILabel instance. PUMenuItem can be passes to PUMenuView via the datasource method `menuView:viewForItemAtIndex:`. In this case the UIControlEvent for the UIButton inside the PUMenuItem will be picked by the menuView and passed out view the delegate method `menuView:itemDidSelectAtIndex:`.
+
+=====
 
 ####Parameters
 ```objc
