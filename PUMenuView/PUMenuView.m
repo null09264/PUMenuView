@@ -7,8 +7,9 @@
 //
 
 #import "PUMenuView.h"
+#import "PUMenuItem.h"
 
-#define BUTTON_TAG_BASE 9743
+#define TAG_BASE 9743
 
 @interface PUMenuView ()
 
@@ -46,16 +47,22 @@
 	//behavior
 	self.menuShouldHideAfterSelection = YES;
 	
-	//animations
-	self.animationUnitDelay = 0.05;
-	self.animationSpringDamping = 0.8;
-	self.animationDuration = 0.5;
-	
 	//layouts
 	self.numberOfColumns = 3;
 	self.itemSideLengthMultiplier = 1/5.0;
 	self.verticalSpaceMultiplier = 1/15.0;
 	self.horizontalMarginMultiplier = 1/12.0;
+	
+	//animations
+	self.animationUnitDelay = 0.05;
+	self.animationSpringDamping = 0.8;
+	self.animationDuration = 0.5;
+	self.animationOrder = @[@1, @0, @2];
+}
+
+- (void)setAnimationOrder:(NSArray *)animationOrder {
+	NSAssert(animationOrder.count == self.numberOfColumns, @"Order array count must equal to number of columns");
+	_animationOrder = animationOrder;
 }
 
 - (CGFloat)horizontalSpacingMultiplier {
@@ -103,8 +110,9 @@
 	for (int i = 0; i < self.items.count; i++) {
 		UIView *item = self.items[i];
 		[item setNeedsLayout];
+		NSNumber *order = self.animationOrder[i % self.numberOfColumns];
 		[UIView animateWithDuration:self.animationDuration
-							  delay:self.animationUnitDelay * i
+							  delay:self.animationUnitDelay * order.doubleValue
 			 usingSpringWithDamping:self.animationSpringDamping
 			  initialSpringVelocity:0
 							options:UIViewAnimationOptionCurveEaseInOut
@@ -132,8 +140,9 @@
 	for (int i = 0; i < self.items.count; i++) {
 		UIView *item = self.items[i];
 		[item setNeedsLayout];
+		NSNumber *order = self.animationOrder[i % self.numberOfColumns];
 		[UIView animateWithDuration:self.animationDuration
-							  delay:self.animationUnitDelay * i
+							  delay:self.animationUnitDelay * order.doubleValue
 			 usingSpringWithDamping:self.animationSpringDamping
 			  initialSpringVelocity:0
 							options:UIViewAnimationOptionCurveEaseIn
@@ -163,24 +172,44 @@
         for (int index = 0; index < [dataSrouce numberOfItemsInMenuView:self]; index++) {
             UIButton *button = [dataSrouce menuView:self buttonForItemAtIndex:index];
             [button addTarget:self action:@selector(buttonDidClick:) forControlEvents:UIControlEventTouchUpInside];
-            button.tag = index + BUTTON_TAG_BASE;
+            button.tag = index + TAG_BASE;
             [self addItem:button];
         }
     } else if ([dataSrouce respondsToSelector:@selector(menuView:viewForItemAtIndex:)]){
         for (int index = 0; index < [dataSrouce numberOfItemsInMenuView:self]; index++) {
             UIView *view = [dataSrouce menuView:self viewForItemAtIndex:index];
+			if ([view isKindOfClass:[PUMenuItem class]]) {
+				UIButton *button = ((PUMenuItem *)view).button;
+				[button addTarget:self action:@selector(buttonDidClick:) forControlEvents:UIControlEventTouchUpInside];
+				button.tag = index + TAG_BASE;
+			} else {
+				view.tag = index + TAG_BASE;
+				UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(viewDidTap:)];
+				[view addGestureRecognizer:tap];
+			}
             [self addItem:view];
         }
     }
 }
 
-#pragma mark - button event handler
+#pragma mark - event handler
 
 - (void)buttonDidClick:(UIButton *)button {
     NSObject<PUMenuViewDelegate> *delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(menuView:itemDidSelectAtIndex:)]) {
-        [delegate menuView:self itemDidSelectAtIndex:button.tag - BUTTON_TAG_BASE];
+        [delegate menuView:self itemDidSelectAtIndex:button.tag - TAG_BASE];
     }
+	
+	if (self.menuShouldHideAfterSelection) {
+		[self hide];
+	}
+}
+
+- (void)viewDidTap:(UITapGestureRecognizer *)recognizer {
+	NSObject<PUMenuViewDelegate> *delegate = self.delegate;
+	if ([delegate respondsToSelector:@selector(menuView:itemDidSelectAtIndex:)]) {
+		[delegate menuView:self itemDidSelectAtIndex:recognizer.view.tag - TAG_BASE];
+	}
 	
 	if (self.menuShouldHideAfterSelection) {
 		[self hide];

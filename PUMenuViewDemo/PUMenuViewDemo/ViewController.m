@@ -8,19 +8,24 @@
 
 #import "ViewController.h"
 #import "PUMenuView.h"
+#import "PUMenuItem.h"
 
 @interface ViewController () <PUMenuViewDelegate, PUMenuViewDataSource>
 @property (nonatomic) PUMenuView *menuView;
 @end
 
-@implementation ViewController
+@implementation ViewController {
+	NSArray *_titles;
+}
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
+	_titles = @[@"Candy", @"Book", @"Flower", @"Mail", @"Card", @"Camera"];
+	
 	PUMenuView *menuView = [[PUMenuView alloc]initWithFrame:self.view.bounds];
     menuView.translatesAutoresizingMaskIntoConstraints = NO;
-	menuView.itemSideLengthMultiplier = 0.25;
+	menuView.itemSideLengthMultiplier = 0.3;
 	
 	//The order is important, you need to set all constant properly before setting the data source
 	menuView.dataSource = self;
@@ -41,13 +46,11 @@
     return 6;
 }
 
-- (UIButton *)menuView:(PUMenuView *)menuView buttonForItemAtIndex:(NSInteger)index {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.backgroundColor = [UIColor blackColor];
-	button.layer.cornerRadius = menuView.itemSideLengthMultiplier * CGRectGetWidth(menuView.frame)/2;
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button setTitle:[NSString stringWithFormat:@"B%ld", index] forState:UIControlStateNormal];
-    return button;
+- (UIView *)menuView:(PUMenuView *)menuView viewForItemAtIndex:(NSInteger)index {
+	PUMenuItem *item = [[PUMenuItem alloc]init];
+	[item.button setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"%ld", index]] forState:UIControlStateNormal];
+	item.label.text = _titles[index];
+	return item;
 }
 
 #pragma mark - PUMenuViewDelegate

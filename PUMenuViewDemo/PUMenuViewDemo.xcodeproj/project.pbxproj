@@ -14,6 +14,7 @@
 		2643B0AC1B28A945007DF049 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2643B0AB1B28A945007DF049 /* Images.xcassets */; };
 		2643B0AF1B28A945007DF049 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2643B0AD1B28A945007DF049 /* LaunchScreen.xib */; };
 		2643B0BB1B28A945007DF049 /* PUMenuViewDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2643B0BA1B28A945007DF049 /* PUMenuViewDemoTests.m */; };
+		264A971E1B2DC4F2004A6402 /* PUMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 264A971D1B2DC4F2004A6402 /* PUMenuItem.m */; };
 		26B27E201B2DB2E300593800 /* PUMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B27E1F1B2DB2E300593800 /* PUMenuView.m */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,8 @@
 		2643B0B41B28A945007DF049 /* PUMenuViewDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PUMenuViewDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2643B0B91B28A945007DF049 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2643B0BA1B28A945007DF049 /* PUMenuViewDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PUMenuViewDemoTests.m; sourceTree = "<group>"; };
+		264A971C1B2DC4F2004A6402 /* PUMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PUMenuItem.h; sourceTree = "<group>"; };
+		264A971D1B2DC4F2004A6402 /* PUMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PUMenuItem.m; sourceTree = "<group>"; };
 		26B27E1E1B2DB2E300593800 /* PUMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PUMenuView.h; sourceTree = "<group>"; };
 		26B27E1F1B2DB2E300593800 /* PUMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PUMenuView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -128,6 +131,8 @@
 			children = (
 				26B27E1E1B2DB2E300593800 /* PUMenuView.h */,
 				26B27E1F1B2DB2E300593800 /* PUMenuView.m */,
+				264A971C1B2DC4F2004A6402 /* PUMenuItem.h */,
+				264A971D1B2DC4F2004A6402 /* PUMenuItem.m */,
 			);
 			name = PUMenuView;
 			path = ../../PUMenuView;
@@ -235,6 +240,7 @@
 			files = (
 				26B27E201B2DB2E300593800 /* PUMenuView.m in Sources */,
 				2643B0A71B28A945007DF049 /* ViewController.m in Sources */,
+				264A971E1B2DC4F2004A6402 /* PUMenuItem.m in Sources */,
 				2643B0A41B28A945007DF049 /* AppDelegate.m in Sources */,
 				2643B0A11B28A945007DF049 /* main.m in Sources */,
 			);

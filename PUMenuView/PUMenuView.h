@@ -12,13 +12,13 @@
 
 @protocol PUMenuViewDataSource
 
-- (NSInteger) numberOfItemsInMenuView:(PUMenuView *) menuView;
+- (NSInteger)numberOfItemsInMenuView:(PUMenuView *)menuView;
 
 @optional
-- (UIButton *) menuView:(PUMenuView *) menuView buttonForItemAtIndex:(NSInteger) index;
+- (UIButton *)menuView:(PUMenuView *)menuView buttonForItemAtIndex:(NSInteger)index;
 
 //This method will not be called if 'menuView:buttonForItemAtIndex:' is implemented in datasource
-- (UIView *) menuView:(PUMenuView *) menuView viewForItemAtIndex:(NSInteger) index;
+- (UIView *)menuView:(PUMenuView *)menuView viewForItemAtIndex:(NSInteger)index;
 
 @end
 
@@ -27,11 +27,11 @@
 
 @optional
 
-- (void) menuView:(PUMenuView *) menuView itemDidSelectAtIndex: (NSInteger) index;
-- (void) menuViewWillShow:(PUMenuView *) menuView;
-- (void) menuViewDidShow:(PUMenuView *) menuView;
-- (void) menuViewWillHide:(PUMenuView *) menuView;
-- (void) menuViewDidHide:(PUMenuView *) menuView;
+- (void)menuView:(PUMenuView *) menuView itemDidSelectAtIndex:(NSInteger)index;
+- (void)menuViewWillShow:(PUMenuView *)menuView;
+- (void)menuViewDidShow:(PUMenuView *)menuView;
+- (void)menuViewWillHide:(PUMenuView *)menuView;
+- (void)menuViewDidHide:(PUMenuView *)menuView;
 
 @end
 
@@ -53,6 +53,7 @@
 @property (nonatomic) CGFloat animationUnitDelay;
 @property (nonatomic) CGFloat animationSpringDamping;
 @property (nonatomic) CGFloat animationDuration;
+@property (nonatomic) NSArray *animationOrder;
 
 //layout
 @property (nonatomic) NSInteger numberOfColumns;
