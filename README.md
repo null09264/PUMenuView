@@ -1,5 +1,5 @@
 ## PUMenuView
-PUMenuView is a "tumblr" style popping menu view. It is built with Objective C and fully backed by Auto Layout. With PUMenuView, you can animate the menu easily and add as many menu items as you wish.
+**PUMenuView** is a "tumblr" style popping menu view. It is built with Objective C and fully backed by **_Auto Layout_**. With PUMenuView, you can animate the menu easily and add as many menu items as you wish.
 
 =====
 
@@ -80,7 +80,7 @@ This method provides the menu the customized views it needs to show. This method
 =====
 
 ###PUMenuItem
-PUMenuItem is a container which combines a UIButton instance and a UILabel instance. PUMenuItem can be passes to PUMenuView via the datasource method `menuView:viewForItemAtIndex:`. In this case the UIControlEvent for the UIButton inside the PUMenuItem will be picked by the menuView and passed out view the delegate method `menuView:itemDidSelectAtIndex:`.
+**PUMenuItem** is a container which combines a UIButton instance and a UILabel instance. **PUMenuItem** can be passes to **PUMenuView** via the datasource method `menuView:viewForItemAtIndex:`. In this case the UIControlEvent for the UIButton inside the PUMenuItem will be picked by the menuView and passed out view the delegate method `menuView:itemDidSelectAtIndex:`.
 
 =====
 
