@@ -16,9 +16,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="EgG-Ym-lpY">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b4Q-uJ-JOE">
                                 <rect key="frame" x="20" y="550" width="39" height="30"/>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Show">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -27,7 +32,9 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DAg-ON-klA">
                                 <rect key="frame" x="548" y="550" width="32" height="30"/>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Hide">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -37,16 +44,26 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="EgG-Ym-lpY" secondAttribute="trailing" id="3NC-Xf-IoK"/>
+                            <constraint firstItem="kyc-7R-8Lc" firstAttribute="top" secondItem="EgG-Ym-lpY" secondAttribute="bottom" id="6ek-9Y-Ab1"/>
+                            <constraint firstItem="EgG-Ym-lpY" firstAttribute="leading" secondItem="8Ku-RO-sRQ" secondAttribute="leading" id="JJ2-92-BFU"/>
                             <constraint firstItem="b4Q-uJ-JOE" firstAttribute="leading" secondItem="8Ku-RO-sRQ" secondAttribute="leading" constant="20" id="VCP-o4-Kbr"/>
+                            <constraint firstItem="EgG-Ym-lpY" firstAttribute="top" secondItem="M7b-W4-Ryg" secondAttribute="bottom" constant="-20" id="Vnc-jd-wRz"/>
                             <constraint firstItem="kyc-7R-8Lc" firstAttribute="top" secondItem="DAg-ON-klA" secondAttribute="bottom" constant="20" id="Wcf-GL-dPv"/>
                             <constraint firstItem="kyc-7R-8Lc" firstAttribute="top" secondItem="b4Q-uJ-JOE" secondAttribute="bottom" constant="20" id="erp-UN-lgc"/>
                             <constraint firstAttribute="trailing" secondItem="DAg-ON-klA" secondAttribute="trailing" constant="20" id="rDN-6Z-y5a"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="backgroundImageView" destination="EgG-Ym-lpY" id="YHk-az-9R9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gys-DO-W9v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="153" y="210"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="background" width="266" height="266"/>
+    </resources>
 </document>

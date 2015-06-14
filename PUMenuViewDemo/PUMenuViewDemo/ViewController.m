@@ -12,6 +12,7 @@
 
 @interface ViewController () <PUMenuViewDelegate, PUMenuViewDataSource>
 @property (nonatomic) PUMenuView *menuView;
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 @end
 
 @implementation ViewController {
@@ -26,12 +27,14 @@
 	PUMenuView *menuView = [[PUMenuView alloc]initWithFrame:self.view.bounds];
     menuView.translatesAutoresizingMaskIntoConstraints = NO;
 	menuView.itemSideLengthMultiplier = 0.3;
+	menuView.horizontalMarginMultiplier = 0.05;
+	menuView.animationUnitDelay = 0.03;
 	
 	//The order is important, you need to set all constant properly before setting the data source
 	menuView.dataSource = self;
 	menuView.delegate = self;
 	
-	[self.view insertSubview:menuView atIndex:0];
+	[self.view insertSubview:menuView aboveSubview:self.backgroundImageView];
 
 	NSDictionary *viewBindings = NSDictionaryOfVariableBindings(menuView);
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[menuView]|" options:0 metrics:nil views:viewBindings]];

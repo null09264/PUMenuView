@@ -43,7 +43,7 @@
 	UIButton *button = self.button;
 	UILabel *label = self.label;
 	NSDictionary *viewBindings = NSDictionaryOfVariableBindings(button, label);
-	[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]-10-[label(12)]|"
+	[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]-10-[label(15)]|"
 																 options:NSLayoutFormatAlignAllCenterX
 																 metrics:nil
 																   views:viewBindings]];

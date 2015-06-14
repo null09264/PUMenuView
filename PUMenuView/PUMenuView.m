@@ -58,6 +58,19 @@
 	self.animationSpringDamping = 0.8;
 	self.animationDuration = 0.5;
 	self.animationOrder = @[@1, @0, @2];
+	
+	//background
+	UIBlurEffect * effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+	UIVisualEffectView * backgroundView =
+	[[UIVisualEffectView alloc] initWithEffect:effect];
+	backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+	backgroundView.alpha = 0;
+	[self addSubview:backgroundView];
+	NSDictionary *viewBindings = NSDictionaryOfVariableBindings(backgroundView);
+	[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[backgroundView]|" options:0 metrics:nil views:viewBindings]];
+	[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[backgroundView]|" options:0 metrics:nil views:viewBindings]];
+	self.backgroundView = backgroundView;
+	
 }
 
 - (void)setAnimationOrder:(NSArray *)animationOrder {
@@ -107,12 +120,16 @@
 	NSObject<PUMenuViewDelegate> *delegate = self.delegate;
 	[self performOptionSelector:@selector(menuViewWillShow:) on:delegate withObject:self];
 	self.isAnimationPresenting = YES;
+	[UIView animateWithDuration:self.animationDuration animations:^(void){
+		self.backgroundView.alpha = 1;
+	}];
+	
 	for (int i = 0; i < self.items.count; i++) {
 		UIView *item = self.items[i];
 		[item setNeedsLayout];
 		NSNumber *order = self.animationOrder[i % self.numberOfColumns];
 		[UIView animateWithDuration:self.animationDuration
-							  delay:self.animationUnitDelay * order.doubleValue
+							  delay:self.animationUnitDelay * (order.doubleValue + 2 * i / self.numberOfColumns)
 			 usingSpringWithDamping:self.animationSpringDamping
 			  initialSpringVelocity:0
 							options:UIViewAnimationOptionCurveEaseInOut
@@ -137,12 +154,15 @@
 	NSObject<PUMenuViewDelegate> *delegate = self.delegate;
 	[self performOptionSelector:@selector(menuViewWillHide:) on:delegate withObject:self];
 	self.isAnimationPresenting = YES;
+	[UIView animateWithDuration:self.animationDuration animations:^(void){
+		self.backgroundView.alpha = 0;
+	}];
 	for (int i = 0; i < self.items.count; i++) {
 		UIView *item = self.items[i];
 		[item setNeedsLayout];
 		NSNumber *order = self.animationOrder[i % self.numberOfColumns];
 		[UIView animateWithDuration:self.animationDuration
-							  delay:self.animationUnitDelay * order.doubleValue
+							  delay:self.animationUnitDelay * (order.doubleValue + 2 * i / self.numberOfColumns)
 			 usingSpringWithDamping:self.animationSpringDamping
 			  initialSpringVelocity:0
 							options:UIViewAnimationOptionCurveEaseIn

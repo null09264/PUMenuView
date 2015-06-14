@@ -41,6 +41,8 @@
 @property (nonatomic, weak) NSObject<PUMenuViewDelegate> *delegate;
 @property (nonatomic, weak) NSObject<PUMenuViewDataSource> *dataSource;
 
+@property (nonatomic, strong) UIView *backgroundView;
+
 //behavior
 @property (nonatomic) BOOL menuShouldHideAfterSelection;
 
