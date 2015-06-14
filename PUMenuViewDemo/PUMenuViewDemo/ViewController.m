@@ -57,6 +57,7 @@
 	PUMenuItem *item = [[PUMenuItem alloc]init];
 	[item.button setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"%ld", index]] forState:UIControlStateNormal];
 	item.label.text = _titles[index];
+	item.label.textColor = [UIColor whiteColor];
 	return item;
 }
 
