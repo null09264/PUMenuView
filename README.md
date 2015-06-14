@@ -5,7 +5,7 @@ PUMenuView is a "tumblr" style popping menu view. It is built with Objective C a
 
 ####Using with CocoaPods
 
-`pod 'PUMenuView', '~> 1.0.0-beta'`
+`pod 'PUMenuView', '~> 1.0.0'`
 
 =====
 
@@ -29,7 +29,7 @@ This method provides the menu the buttons it needs to show. These buttons will s
 -(UIView *)menuView:(PUMenuView *)menuView viewForItemAtIndex:(NSInteger)index;
 ```
 
-This method provides the menu the customized views it needs to show. This method has a lower priority than `menuView:menuView buttonForItemAtIndex:`, which means when `menuView:buttonForItemAtIndex:` is implemented in the datasource, this method won't be called. Another difference is these customized views has no related delegate methods to detect user interaction. 
+This method provides the menu the customized views it needs to show. This method has a lower priority than `menuView:menuView buttonForItemAtIndex:`, which means when `menuView:buttonForItemAtIndex:` is implemented in the datasource, this method won't be called. After the view is passed in, the menu view will attach an UITapGestureRecognizer onto the view. One the view is tapped, the delegate `menuView:itemDidSelectAtIndex:` will be triggered.
 
 
 ####Delegate Methods
@@ -46,6 +46,11 @@ This method provides the menu the customized views it needs to show. This method
 
 ####Parameters
 ```objc
+@property (nonatomic, weak) NSObject<PUMenuViewDelegate> *delegate;
+@property (nonatomic, weak) NSObject<PUMenuViewDataSource> *dataSource;
+
+@property (nonatomic, strong) UIView *backgroundView;
+
 //behavior
 @property (nonatomic) BOOL menuShouldHideAfterSelection;
 
@@ -58,6 +63,7 @@ This method provides the menu the customized views it needs to show. This method
 @property (nonatomic) CGFloat animationUnitDelay;
 @property (nonatomic) CGFloat animationSpringDamping;
 @property (nonatomic) CGFloat animationDuration;
+@property (nonatomic) NSArray *animationOrder;
 
 //layout
 @property (nonatomic) NSInteger numberOfColumns;
@@ -65,4 +71,13 @@ This method provides the menu the customized views it needs to show. This method
 @property (nonatomic) CGFloat verticalSpaceMultiplier;
 @property (nonatomic) CGFloat horizontalMarginMultiplier;
 @property (nonatomic, readonly) CGFloat horizontalSpacingMultiplier;
+```
+
+##PUMenuItem
+PUMenuItem is a container which combines a UIButton instance and a UILabel instance. PUMenuItem can be passes to PUMenuView via the datasource method `menuView:viewForItemAtIndex:`. In this case the UIControlEvent for the UIButton inside the PUMenuItem will be picked by the menuView and passed out view the delegate method `menuView:itemDidSelectAtIndex:`.
+
+####Parameters
+```objc
+@property (nonatomic) UIButton *button;
+@property (nonatomic) UILabel *label;
 ```
