@@ -33,7 +33,7 @@ This method provides the menu the buttons it needs to show. These buttons will s
 -(UIView *)menuView:(PUMenuView *)menuView viewForItemAtIndex:(NSInteger)index;
 ```
 
-This method provides the menu the customized views it needs to show. This method has a lower priority than `menuView:menuView buttonForItemAtIndex:`, which means when `menuView:buttonForItemAtIndex:` is implemented in the datasource, this method won't be called. After the view is passed in, the menu view will attach an UITapGestureRecognizer onto the view. One the view is tapped, the delegate `menuView:itemDidSelectAtIndex:` will be triggered.
+This method provides the menu the customized views it needs to show. This method has a lower priority than `menuView:menuView buttonForItemAtIndex:`, which means when `menuView:buttonForItemAtIndex:` is implemented in the datasource, this method won't be called. After the view is passed in, the menu view will attach an UITapGestureRecognizer onto the view. Once the view is tapped, the delegate `menuView:itemDidSelectAtIndex:` will be triggered.
 
 
 ####Delegate Methods
