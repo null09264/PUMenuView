@@ -53,6 +53,8 @@
 
 //animation (show & hide)
 @property (nonatomic) CGFloat animationUnitDelay;
+@property (nonatomic) CGFloat animationBackgroundDismissDelay;
+@property (nonatomic) CGFloat animationBackgroundDuration;
 @property (nonatomic) CGFloat animationSpringDamping;
 @property (nonatomic) CGFloat animationDuration;
 @property (nonatomic) NSArray *animationOrder;
@@ -63,6 +65,9 @@
 @property (nonatomic) CGFloat verticalSpaceMultiplier;
 @property (nonatomic) CGFloat horizontalMarginMultiplier;
 @property (nonatomic, readonly) CGFloat horizontalSpacingMultiplier;
+
+//userinfo
+@property (nonatomic) NSMutableDictionary *userInfo;
 
 - (void)show;
 - (void)hide;

@@ -2,8 +2,8 @@
 //  PUMenuItem.m
 //  PUMenuViewDemo
 //
-//  Created by NULL on 14/06/15.
-//  Copyright (c) 2015年 Wang, Jinghan. All rights reserved.
+//  Created by Wang, Jinghan on 14/06/15.
+//  Copyright (c) 2015 Wang, Jinghan. All rights reserved.
 //
 
 #import "PUMenuItem.h"

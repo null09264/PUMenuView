@@ -43,6 +43,7 @@
 	self = [super initWithFrame:frame];
 	if (self) {
 		self.items = [[NSMutableArray alloc]init];
+		self.userInfo = [[NSMutableDictionary alloc]init];
 		[self registerDefaults];
 	}
 	return self;
@@ -63,7 +64,8 @@
 	self.animationSpringDamping = 0.8;
 	self.animationDuration = 0.5;
 	self.animationOrder = @[@1, @0, @2];
-	
+	self.animationBackgroundDismissDelay = 0.5;
+	self.animationBackgroundDuration = 0.3;
 	//background
 	UIBlurEffect * effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
 	UIVisualEffectView * backgroundView = [[UIVisualEffectView alloc] initWithEffect:effect];
@@ -132,7 +134,7 @@
 	NSObject<PUMenuViewDelegate> *delegate = self.delegate;
 	[self performOptionSelector:@selector(menuViewWillShow:) on:delegate withObject:self];
 	self.isAnimationPresenting = YES;
-	[UIView animateWithDuration:self.animationDuration animations:^(void){
+	[UIView animateWithDuration:self.animationBackgroundDuration animations:^(void){
 		self.backgroundView.alpha = 1;
 	}];
 	
@@ -174,9 +176,14 @@
 	NSObject<PUMenuViewDelegate> *delegate = self.delegate;
 	[self performOptionSelector:@selector(menuViewWillHide:) on:delegate withObject:self];
 	self.isAnimationPresenting = YES;
-	[UIView animateWithDuration:self.animationDuration animations:^(void){
-		self.backgroundView.alpha = 0;
-	}];
+	
+	[UIView animateWithDuration:self.animationBackgroundDuration
+						  delay:self.animationBackgroundDismissDelay
+						options:0
+					 animations:^(void){
+						 self.backgroundView.alpha = 0;
+					 } completion:nil];
+	
 	for (int i = 0; i < self.items.count; i++) {
 		UIView *item = self.items[i];
 		[item setNeedsLayout];
