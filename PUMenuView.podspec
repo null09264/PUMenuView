@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "PUMenuView"
-  s.version      = "1.0.2"
+  s.version      = "1.0.3"
   s.summary      = "PUMenuView is a tumblr style popping menu view. It is built with Objective C and fully backed by Auto Layout."
 
   s.description  = <<-DESC
@@ -71,7 +71,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/null09264/PUMenuView.git", :tag => "1.0.2", :commit => "7d5b43feb8b0666fb6f0d77ac5c1b7337ea681a2" }
+  s.source       = { :git => "https://github.com/null09264/PUMenuView.git", :tag => "1.0.3", :commit => "8ca73709cba853eeac5a35c1d72c531e86739533" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
