@@ -7,7 +7,6 @@
 //
 
 #import "PUMenuView.h"
-#import "PUMenuItem.h"
 
 #define TAG_BASE 9743
 

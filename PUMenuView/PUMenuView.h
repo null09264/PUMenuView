@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Wang, Jinghan. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "PUMenuItem.h"
 
 @class PUMenuView;
 
