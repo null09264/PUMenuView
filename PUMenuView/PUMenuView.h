@@ -8,6 +8,13 @@
 
 #import "PUMenuItem.h"
 
+typedef enum {
+    AnimationDirectionEnterTopExitTop,
+    AnimationDirectionEnterTopExitBottom,
+    AnimationDirectionEnterBottomExitTop,
+    AnimationDirectionEnterBottomExitBottom
+} AnimationDirection;
+
 @class PUMenuView;
 
 @protocol PUMenuViewDataSource
@@ -58,6 +65,7 @@
 @property (nonatomic) CGFloat animationSpringDamping;
 @property (nonatomic) CGFloat animationDuration;
 @property (nonatomic) NSArray *animationOrder;
+@property (nonatomic) AnimationDirection animationDirection;
 
 //layout
 @property (nonatomic) NSInteger numberOfColumns;
