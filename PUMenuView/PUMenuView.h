@@ -52,6 +52,7 @@ typedef enum {
 
 //behavior
 @property (nonatomic) BOOL menuShouldHideAfterSelection;
+@property (nonatomic) BOOL menuShouldHideOnTapOut;
 
 //state
 @property (nonatomic) BOOL isAnimationPresenting;

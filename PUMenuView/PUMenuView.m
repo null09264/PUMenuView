@@ -51,6 +51,7 @@
 - (void)registerDefaults {
 	//behavior
 	self.menuShouldHideAfterSelection = YES;
+    self.menuShouldHideOnTapOut = YES;
 	
 	//layouts
 	self.numberOfColumns = 3;
@@ -274,7 +275,7 @@
 }
 
 - (void)viewDidTap:(UITapGestureRecognizer *)recognizer {
-	if (recognizer == self.dismissTapGesture) {
+	if (recognizer == self.dismissTapGesture && self.menuShouldHideOnTapOut) {
 		[self hide];
 		return;
 	}
