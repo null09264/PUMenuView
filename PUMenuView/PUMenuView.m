@@ -275,8 +275,8 @@
 }
 
 - (void)viewDidTap:(UITapGestureRecognizer *)recognizer {
-	if (recognizer == self.dismissTapGesture && self.menuShouldHideOnTapOut) {
-		[self hide];
+	if (recognizer == self.dismissTapGesture) {
+		if (self.menuShouldHideOnTapOut) [self hide];
 		return;
 	}
 	
