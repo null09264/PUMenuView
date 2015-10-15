@@ -51,6 +51,7 @@
 - (void)registerDefaults {
 	//behavior
 	self.menuShouldHideAfterSelection = YES;
+    self.menuShouldHideOnTapOut = YES;
 	
 	//layouts
 	self.numberOfColumns = 3;
@@ -65,6 +66,7 @@
 	self.animationOrder = @[@1, @0, @2];
 	self.animationBackgroundDismissDelay = 0.5;
 	self.animationBackgroundDuration = 0.3;
+    self.animationDirection = AnimationDirectionEnterBottomExitTop;
 	//background
 	UIBlurEffect * effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
 	UIVisualEffectView * backgroundView = [[UIVisualEffectView alloc] initWithEffect:effect];
@@ -103,6 +105,18 @@
 
 #pragma mark - show and hide animation
 
+- (BOOL)enterBottom
+{
+    return (_animationDirection == AnimationDirectionEnterBottomExitBottom ||
+            _animationDirection == AnimationDirectionEnterBottomExitTop);
+}
+
+- (BOOL)exitTop
+{
+    return (_animationDirection == AnimationDirectionEnterBottomExitTop ||
+            _animationDirection == AnimationDirectionEnterTopExitTop);
+}
+
 - (void)prepare {
 	if (self.readyForShowing && self.isAnimationPresenting) {
 		return;
@@ -112,7 +126,8 @@
 	
 	for (UIView *item in self.items) {
 		CGPoint center = item.center;
-		center.y += CGRectGetHeight([UIScreen mainScreen].bounds);
+        CGFloat move = CGRectGetHeight([UIScreen mainScreen].bounds);
+        center.y += ([self enterBottom]) ? move : -move;
 		item.center = center;
 		item.alpha = 0;
 	}
@@ -195,7 +210,7 @@
 						 animations:^(void) {
 							 CGPoint center = item.center;
 							 CGFloat farestDistance = CGRectGetHeight(self.positionLayoutGuideContainer.bounds)/2 + self.positionLayoutGuideContainer.center.y;
-							 center.y -= farestDistance;
+                             center.y -= ([self exitTop]) ? farestDistance : -farestDistance;
 							 item.center = center;
 							 item.alpha = 0;
 						 } completion:^(BOOL finished){
@@ -261,7 +276,7 @@
 
 - (void)viewDidTap:(UITapGestureRecognizer *)recognizer {
 	if (recognizer == self.dismissTapGesture) {
-		[self hide];
+		if (self.menuShouldHideOnTapOut) [self hide];
 		return;
 	}
 	
