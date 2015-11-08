@@ -58,6 +58,7 @@
 	self.itemSideLengthMultiplier = 1/5.0;
 	self.verticalSpaceMultiplier = 1/15.0;
 	self.horizontalMarginMultiplier = 1/12.0;
+	self.itemWidthHeightRatio = 1;
 	
 	//animations
 	self.animationUnitDelay = 0.05;
@@ -93,6 +94,10 @@
 }
 
 - (CGFloat)horizontalSpacingMultiplier {
+	if (self.numberOfColumns == 1) {
+		return 0;
+	}
+	
 	return (1 - 2 * self.horizontalMarginMultiplier - 3 * self.itemSideLengthMultiplier) / (self.numberOfColumns - 1);
 }
 
@@ -320,7 +325,7 @@
 														 relatedBy:NSLayoutRelationEqual
 															toItem:template
 														 attribute:NSLayoutAttributeHeight
-														multiplier:1
+														multiplier:self.itemWidthHeightRatio
 														  constant:0]];
 	self.itemTemplate = template;
 }
@@ -558,7 +563,7 @@
 													 relatedBy:NSLayoutRelationEqual
 														toItem:item
 													 attribute:NSLayoutAttributeHeight
-													multiplier:1
+													multiplier:self.itemWidthHeightRatio
 													  constant:0]];
 	
 	//set horizontal constraints for guide items

@@ -69,6 +69,7 @@ typedef enum {
 @property (nonatomic) AnimationDirection animationDirection;
 
 //layout
+@property (nonatomic) CGFloat itemWidthHeightRatio;
 @property (nonatomic) NSInteger numberOfColumns;
 @property (nonatomic) CGFloat itemSideLengthMultiplier;
 @property (nonatomic) CGFloat verticalSpaceMultiplier;
