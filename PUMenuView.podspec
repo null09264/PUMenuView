@@ -71,7 +71,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/null09264/PUMenuView.git", :tag => "1.0.4", :commit => "8ca73709cba853eeac5a35c1d72c531e86739533" }
+  s.source       = { :git => "https://github.com/null09264/PUMenuView.git", :tag => "1.0.4", :commit => "6823142400f43e3a29e90c567921ba5f913715c4" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
