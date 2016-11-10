@@ -54,7 +54,7 @@ Pod::Spec.new do |s|
 
   s.author             = { "Wang Jinghan" => "phantom.there@gmail.com" }
   s.social_media_url = 'https://twitter.com/null09264'
-  
+
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -71,7 +71,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/null09264/PUMenuView.git", :tag => "1.0.4", :commit => "6823142400f43e3a29e90c567921ba5f913715c4" }
+  s.source       = { :git => "git@github.com:jbredice/PUMenuView.git", :tag => "1.0.5"}
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
