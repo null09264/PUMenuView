@@ -149,6 +149,7 @@
 	if (self.isAnimationPresenting || !self.isHidden || !self.readyForShowing) {
 		return;
 	}
+    [self setNeedsLayout];
 	
 	NSObject<PUMenuViewDelegate> *delegate = self.delegate;
 	[self performOptionSelector:@selector(menuViewWillShow:) on:delegate withObject:self];
@@ -156,6 +157,7 @@
 	[UIView animateWithDuration:self.animationBackgroundDuration animations:^(void){
 		self.backgroundView.alpha = 1;
 	}];
+
 	
 	for (int i = 0; i < self.items.count; i++) {
 		UIView *item = self.items[i];
@@ -168,7 +170,7 @@
 							options:UIViewAnimationOptionCurveEaseInOut
 						 animations:^(void) {
 							 item.alpha = 1;
-							 [item layoutIfNeeded];
+							 [self layoutIfNeeded];
 						 } completion:^(BOOL finished){
 							 self.isAnimationPresenting = NO;
 							 self.isHidden = NO;
