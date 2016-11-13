@@ -159,7 +159,6 @@
 	
 	for (int i = 0; i < self.items.count; i++) {
 		UIView *item = self.items[i];
-		[item setNeedsLayout];
 		NSNumber *order = self.animationOrder[i % self.numberOfColumns];
 		[UIView animateWithDuration:self.animationDuration
 							  delay:self.animationUnitDelay * (order.doubleValue + 2 * i / self.numberOfColumns)
@@ -168,7 +167,10 @@
 							options:UIViewAnimationOptionCurveEaseInOut
 						 animations:^(void) {
 							 item.alpha = 1;
-							 [item layoutIfNeeded];
+							 CGPoint center = item.center;
+							 CGFloat move = CGRectGetHeight([UIScreen mainScreen].bounds);
+							 center.y -= ([self enterBottom]) ? move : -move;
+							 item.center = center;
 						 } completion:^(BOOL finished){
 							 self.isAnimationPresenting = NO;
 							 self.isHidden = NO;
@@ -205,7 +207,6 @@
 	
 	for (int i = 0; i < self.items.count; i++) {
 		UIView *item = self.items[i];
-		[item setNeedsLayout];
 		NSNumber *order = self.animationOrder[i % self.numberOfColumns];
 		[UIView animateWithDuration:self.animationDuration
 							  delay:self.animationUnitDelay * (order.doubleValue + 2 * i / self.numberOfColumns)
